@@ -14,10 +14,16 @@
 // let elements = document.querySelectorAll("li");
 // elements[1].style.color = "green";
 
-let elements = document.querySelectorAll("li:nth-child(odd)");
+// let elements = document.querySelectorAll("li:nth-child(odd)");
 
-Array.from(elements).forEach((item) => {
-  if (item % 2 != 0) {
-    item.style.backgroundColor = "green";
-  }
-});
+// Array.from(elements).forEach((item) => {
+//   if (item % 2 != 0) {
+//     item.style.backgroundColor = "green";
+//   }
+// });
+
+let ele = document.getElementById("header-title");
+let newEle = document.createElement("h2");
+newEle.textContent = "HEllo";
+ele.prepend(newEle);
+
