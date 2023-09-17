@@ -44,6 +44,7 @@ function addItem(e) {
 
   // Get input value
   var newItem = document.getElementById("item").value;
+  var newItemDescription = document.getElementById("description").value;
 
   // Create new li element
   var li = document.createElement("li");
@@ -51,6 +52,13 @@ function addItem(e) {
   li.className = "list-group-item";
   // Add text node with input value
   li.appendChild(document.createTextNode(newItem));
+
+  var itemNameDiv = document.createElement("div");
+  itemNameDiv.textContent = newItem;
+
+  // Create div to hold item description
+  var itemDescriptionDiv = document.createElement("div");
+  itemDescriptionDiv.textContent = newItemDescription;
 
   // Create del button element
   var deleteBtn = document.createElement("button");
@@ -67,11 +75,17 @@ function addItem(e) {
 
   editBtn.appendChild(document.createTextNode("Edit"));
   // Append button to li
+  li.appendChild(itemNameDiv);
+  li.appendChild(itemDescriptionDiv);
   li.appendChild(deleteBtn);
   li.appendChild(editBtn);
 
   // Append li to list
+
   itemList.appendChild(li);
+
+  document.getElementById("item").value = "";
+  document.getElementById("description").value = "";
 }
 
 // Remove item
@@ -92,11 +106,19 @@ function filterItems(e) {
   var items = itemList.getElementsByTagName("li");
   // Convert to an array
   Array.from(items).forEach(function (item) {
-    var itemName = item.firstChild.textContent;
-    if (itemName.toLowerCase().indexOf(text) != -1) {
-      item.style.display = "block";
-    } else {
-      item.style.display = "none";
+    var itemNameDiv = item.querySelector("div:first-child");
+    var itemDescriptionDiv = item.querySelector("div:nth-child(2)");
+    if (itemNameDiv && itemDescriptionDiv) {
+      var itemName = itemNameDiv.textContent.toLowerCase();
+      var itemDescription = itemDescriptionDiv.textContent.toLowerCase();
+      if (
+        itemName.indexOf(text) !== -1 ||
+        itemDescription.indexOf(text) !== -1
+      ) {
+        item.style.display = "block";
+      } else {
+        item.style.display = "none";
+      }
     }
   });
 }
