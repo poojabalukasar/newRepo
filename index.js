@@ -134,6 +134,7 @@ form.addEventListener("submit", (e) => {
   const time = document.getElementById("time").value;
   const tm = document.getElementById("tm").value;
 
+  const userList = document.getElementById("user");
   // const userInfo = [name, email, phone, time, tm];
 
   // localStorage.setItem("userInformation", JSON.stringify(userInfo));
@@ -154,10 +155,20 @@ form.addEventListener("submit", (e) => {
   //to store this object into localstorage we need to convert
   //it into string
 
-  const userJSON = JSON.stringify(user);
-  localStorage.setItem("userInfo", userJSON);
+  addUserTolocalStorage(user);
+  displayUserInList(user);
+  form.reset();
 
-  const convertUser = localStorage.getItem("userInfo");
-  const finalUser = JSON.parse(convertUser);
-  console.log(finalUser);
+  function addUserTolocalStorage(user) {
+    const existUsers = JSON.parse(localStorage.getItem("users")) || [];
+    console.log(existUsers);
+    existUsers.push(user);
+    localStorage.setItem("users", JSON.stringify(existUsers));
+  }
+
+  function displayUserInList(user) {
+    const li = document.createElement("li");
+    li.textContent = `Username: ${user.firstName}, Email: ${user.email}, Phone : ${user.phone}`;
+    userList.appendChild(li);
+  }
 });
