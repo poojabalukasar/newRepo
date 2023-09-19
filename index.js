@@ -123,10 +123,6 @@
 //   });
 // }
 
-
-
-
-
 //REGISTRATION FORM INFO STORE INTO LOCALSTORAGE
 const form = document.getElementById("regiForm");
 
@@ -138,11 +134,30 @@ form.addEventListener("submit", (e) => {
   const time = document.getElementById("time").value;
   const tm = document.getElementById("tm").value;
 
-  const userInfo = [name, email, phone, time, tm];
+  // const userInfo = [name, email, phone, time, tm];
 
-  localStorage.setItem("userInformation", JSON.stringify(userInfo));
-  const userInfobyLocal = localStorage.getItem("userInformation");
-  const u = JSON.parse(userInfobyLocal);
+  // localStorage.setItem("userInformation", JSON.stringify(userInfo));
+  // const userInfobyLocal = localStorage.getItem("userInformation");
+  // const u = JSON.parse(userInfobyLocal);
 
-  console.log(u);
+  // console.log(u);
+
+  //user OBJECT
+  const user = {
+    firstName: name,
+    email: email,
+    phone: phone,
+    time: time,
+    tm: tm,
+  };
+
+  //to store this object into localstorage we need to convert
+  //it into string
+
+  const userJSON = JSON.stringify(user);
+  localStorage.setItem("userInfo", userJSON);
+
+  const convertUser = localStorage.getItem("userInfo");
+  const finalUser = JSON.parse(convertUser);
+  console.log(finalUser);
 });
