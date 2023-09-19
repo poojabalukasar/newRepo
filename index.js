@@ -136,6 +136,14 @@ form.addEventListener("submit", (e) => {
 
   const userList = document.getElementById("user");
 
+  const editForm = document.getElementById("editForm");
+  const editName = document.getElementById("editName");
+  const editEmail = document.getElementById("editEmail");
+  const editPhone = document.getElementById("editPhone");
+  const saveEdit = document.getElementById("saveEdit");
+  const cancelEdit = document.getElementById("cancelEdit");
+  const editIndex = document.getElementById("editIndex");
+
   //user OBJECT
   const user = {
     firstName: name,
@@ -160,6 +168,26 @@ form.addEventListener("submit", (e) => {
     localStorage.setItem("users", JSON.stringify(existUsers));
   }
 
+  function editUser(index) {
+    const users = getUsersFromLocalStorage();
+    const user = users[index];
+    editIndex.value = index;
+    editName.value = user.firstName;
+    editEmail.value = user.email;
+    editPhone.value = user.phone;
+    editForm.style.display = "block";
+    userList.style.display = "none";
+  }
+
+  function createEditButton(index) {
+    const editButton = document.createElement("button");
+    editButton.textContent = "Edit";
+    editButton.addEventListener("click", function () {
+      editUser(index);
+    });
+    return editButton;
+  }
+
   function getUsersFromLocalStorage() {
     return JSON.parse(localStorage.getItem("users")) || [];
   }
@@ -167,6 +195,13 @@ form.addEventListener("submit", (e) => {
   function displayUserInList(user) {
     const li = document.createElement("li");
     li.textContent = `Username: ${user.firstName}, Email: ${user.email}, Phone : ${user.phone}`;
+    const users = getUsersFromLocalStorage();
+    const userIdx = users.findIndex((u) => u.firstName === user.firstName);
+    if (userIdx !== -1) {
+      const editButton = createEditButton(userIdx);
+      li.appendChild(editButton);
+      userList.appendChild(li);
+    }
 
     // Create a delete button for each user
     const deleteButton = document.createElement("button");
