@@ -135,13 +135,6 @@ form.addEventListener("submit", (e) => {
   const tm = document.getElementById("tm").value;
 
   const userList = document.getElementById("user");
-  // const userInfo = [name, email, phone, time, tm];
-
-  // localStorage.setItem("userInformation", JSON.stringify(userInfo));
-  // const userInfobyLocal = localStorage.getItem("userInformation");
-  // const u = JSON.parse(userInfobyLocal);
-
-  // console.log(u);
 
   //user OBJECT
   const user = {
@@ -157,6 +150,7 @@ form.addEventListener("submit", (e) => {
 
   addUserTolocalStorage(user);
   displayUserInList(user);
+
   form.reset();
 
   function addUserTolocalStorage(user) {
@@ -166,9 +160,36 @@ form.addEventListener("submit", (e) => {
     localStorage.setItem("users", JSON.stringify(existUsers));
   }
 
+  function getUsersFromLocalStorage() {
+    return JSON.parse(localStorage.getItem("users")) || [];
+  }
+
   function displayUserInList(user) {
     const li = document.createElement("li");
     li.textContent = `Username: ${user.firstName}, Email: ${user.email}, Phone : ${user.phone}`;
+
+    // Create a delete button for each user
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+
+    deleteButton.addEventListener("click", function () {
+      userList.removeChild(li);
+
+      const users = getUsersFromLocalStorage();
+      const userIndex = users.findIndex((u) => u.firstName === user.firstName);
+      if (userIndex !== -1) {
+        users.splice(userIndex, 1);
+        localStorage.setItem("users", JSON.stringify(users));
+      }
+    });
+
+    // Append the delete button to the user's list item
+    li.appendChild(deleteButton);
     userList.appendChild(li);
   }
+
+  const initialUsers = getUsersFromLocalStorage();
+  initialUsers.forEach(function (user) {
+    displayUserInList(user);
+  });
 });
